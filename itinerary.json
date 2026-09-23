@@ -1,0 +1,18 @@
+{
+  "trip": {"name":"日本东京箱根之旅","dates":"2026-11-04 — 11-11","days":8,"travelers":2,"cities":["东京","箱根"]},
+  "hotels":[
+    {"name":"安心宿 Tokyo Woman 新宿荻窪店","checkIn":"2026-11-04","checkOut":"2026-11-06","area":"荻窪"},
+    {"name":"两国民宿","checkIn":"2026-11-06","checkOut":"2026-11-09","address":"東京都墨田区両国4-31-14"},
+    {"name":"静观荘","checkIn":"2026-11-09","checkOut":"2026-11-10","mealPlan":"一泊二食","roomNote":"无景观露天私汤房"},
+    {"name":"Saibo Hotel","checkIn":"2026-11-10","checkOut":"2026-11-11","status":"暂定"}
+  ],
+  "fixedPlans":[
+    {"date":"2026-11-05","name":"东京迪士尼乐园","type":"门票"},
+    {"date":"2026-11-06","name":"东京巨蛋演唱会","start":"18:00","arriveBy":"16:30"},
+    {"date":"2026-11-08","name":"东京巨蛋演唱会","start":"16:30","arriveBy":"15:00-15:20"},
+    {"date":"2026-11-09","name":"Lalique Museum 东方快车下午茶","time":"待确认"},
+    {"date":"2026-11-11","name":"成田机场 T2 回程航班","start":"15:00"}
+  ],
+  "privacy":"private-shared-with-sister"
+}
+
