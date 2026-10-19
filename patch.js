@@ -74,6 +74,46 @@ if (!T.wishlist) T.wishlist = {
   ]
 };
 
+// Update saved restaurant lists once without clearing tickets or checklists.
+if (T.wishlist.restaurantPlanVersion !== '2026-10-20') {
+  const restaurantUpdates = [
+    {name: '牛たんの檸檬 · 新宿総本店', area: '新宿', kind: '厚切牛舌', address: '東京都新宿区西新宿7-16-12 YSビル B1F', note: '最适合 11/7 逛完新宿后吃晚餐；先完成会早关门的店铺。11/10 只有本来就在新宿补货才选，不为吃饭往返。可预约，定食用餐限时 60 分钟。', hours: '11:30–15:00；周日至周四 17:00–22:00（L.O. 21:00）；周五、六 17:00–22:30（L.O. 21:45）', closed: '年末年始；临时休业以店方公告为准', status: '11/7 晚餐优先候选', query: '牛たんの檸檬 新宿総本店 西新宿7-16-12', source: 'https://www.tablecheck.com/ja/shops/gyutannolemon/reserve'},
+    {name: '道玄坂マンモス / Dogenzaka Mammoth', area: '涩谷・惠比寿', kind: '沾面／拉面', address: '東京都渋谷区道玄坂2-10-1', note: '11/7 实际走到涩谷站西侧时可吃；chocoshoe／DARUMA 所在的涩谷东侧不是同一边，属于小绕行。与新宿牛舌择一，不硬塞两顿。不可预约，排队过长就跳过。', hours: '11:30–22:00（店方公开资料；临时调整以现场为准）', closed: '通常无休，年末年始除外', status: '11/7 涩谷段条件候选', query: '道玄坂マンモス 渋谷区道玄坂2-10-1', source: 'https://tabelog.com/tokyo/A1303/A130301/13122700/'},
+    {name: 'GARAKU（分店待确认）', area: '中野', kind: '汤咖喱', address: '候选：東京中野店／東京都中野区中野5-50-3 KINGビル1F', note: '先保留品牌，不替你确定分店。若指中野店，11/4 入住荻窪后有体力且不去吉祥寺时可考虑；不算必经，要专门在中野下车。11/7 加中野会偏离原宿／涩谷／新宿购物线。若指八王子店，本次不顺路。', hours: '中野店：11:30–15:30（L.O. 15:00）、17:00–23:00（L.O. 22:30）；分店待确认', closed: '中野店不定休；汤售完可能提前结束', status: '分店待确认／中野店为 11/4 弹性', query: 'GARAKU 東京中野店 中野5-50-3', source: 'https://s-garaku.com/shoplist.php'},
+    {name: '喫茶 一房', area: '下北泽', kind: '喫茶／水果三明治', address: '東京都世田谷区北沢2-21-26 2F（用户提供；到店前核对官方定位）', note: '现有行程没有下北泽购物段，不算顺路。11/10 只有普通小田急返程愿意中途下车、当日营业且返东京够早才考虑；直达新宿的 Romancecar 不能当作在下北泽停站。营业日与定位未核实前不排死。', hours: '当前营业时间待官方确认', closed: '待官方当月营业日历确认，尤其 11/10 周二', status: '低优先／有下北泽行程再安排', query: '喫茶 一房 下北沢', source: 'https://www.instagram.com/kissa_hitofusa/'},
+    {name: '海の幸 翔', area: '岩本町・秋叶原・神田', kind: '海鲜丼', address: '東京都千代田区神田東松下町12 宮川ビル東棟 1F', note: '位置能接秋叶原／神田，但 11/8 是周日，营业未确认，不因离 Yuzu Lab 近就安排两顿午饭。11/6 仍受编发和行李寄放限制；11/10 通常赶不上午餐；11/11 机场日前不安排排队海鲜丼。', hours: '当前营业时间未获店方确认；网上资料存在差异', closed: '周末休息资料不一致，须向店方确认；不默认周日开门', status: '地理顺路／时间受限，暂不固定', query: '海の幸 翔 神田東松下町12 宮川ビル'},
+    {name: '浅草今半 · 国際通り本店', area: '浅草', kind: '寿喜烧／牛肉饭', address: '東京都台東区西浅草3-1-12', note: '11/6 若行李已解决、决定走浅草路线，可作为午餐选项；与海鲜丼择一。国際通り本店在浅草西侧，与东侧八十八／Asahi 不是紧邻。午餐限定菜单不可预约，不能用排队挤占巨蛋入场时间。', hours: '11:30–21:30（L.O. 20:30）；午餐 11:30–14:30；14:30–16:00 暂停接待，最晚 19:00 入店', closed: '通常全年无休；留意临时公告', status: '11/6 浅草午餐条件候选', query: '浅草今半 国際通り本店 西浅草3-1-12', source: 'https://www.asakusaimahan.co.jp/kokusai'},
+    {name: '八十八浅草（八十八良葉舎）', area: '浅草', kind: '抹茶／甜品', address: '東京都台東区花川戸2-14-3', note: '11/6 若本来就走浅草东侧，可作为短暂停靠；排队长就放弃。与今半可同一区域安排，但不在隔壁；不再同时堆叠多家咖啡、甜品与啤酒。', hours: '官网未列营业时间，待店方确认', closed: '待当月店方公告确认', status: '11/6 浅草段弹性甜品', query: '八十八浅草 花川戸2-14-3', source: 'https://www.8108kyoto.com/'},
+    {name: '回転寿しトリトン · 東京ソラマチ店', area: '押上・晴空塔', kind: '回转寿司', address: '東京都墨田区押上1-1-2 東京スカイツリータウン ソラマチ6F', note: '只有本来安排晴空塔城才顺路；从两国特意过去吃属于额外行程。店头取号，不接受预约，混杂时提前停止受付。11/6、11/8 演唱会前不安排不可控排队；11/10 仅返东京早且改在晴空塔补货时可候选。', hours: '11:00–22:00（L.O. 21:30）；席位使用 80 分钟', closed: '以商场及店方临时公告为准', status: '晴空塔购物时才安排', query: '回転寿しトリトン 東京ソラマチ店', source: 'https://www.tokyo-solamachi.jp/shop/detail/295/'},
+    {name: 'YAKINIKU MARUUSHI · 银座本店', area: '银座', kind: '和牛烧肉', address: '東京都中央区銀座1-5-10 GINZA 1st.5 BLDG 8階', note: '11/10 从箱根回东京后，若当晚在银座补货，这是顺路的晚餐优先候选。预约应留返程余量，不抢着赶早场。认准 8F 银座本店，别订成同楼 9F THE ROOM。', hours: '17:00–23:00（官网）', closed: '官网未列固定休息日，预约时核对', status: '11/10 银座补货后晚餐候选', query: 'YAKINIKU MARUUSHI 銀座本店 銀座1-5-10 8F', source: 'https://www.maruushi.com/'},
+    {name: '人形町らーめん いなせ', area: '人形町・日本桥', kind: '拉面', address: '東京都中央区日本橋人形町2-2-3 堀口ビル1F', note: '按你提供的地址对应此店。若最后一晚仍住 Saibo，11/10 晚餐或补货后回酒店时最自然；11/11 不为等午餐开门压缩去机场时间。', hours: '当前营业时间待店方确认；不以旧版深夜时间保证营业', closed: '待出行前确认', status: '11/10 住 Saibo 时最顺路', query: '人形町らーめん いなせ 人形町2-2-3', source: 'https://happy-kaimonoken.info/?p=51315'}
+  ];
+  for (const item of restaurantUpdates) {
+    const index = T.wishlist.restaurants.findIndex(existing => existing.name === item.name);
+    if (index < 0) T.wishlist.restaurants.push(item);
+    else T.wishlist.restaurants[index] = {...T.wishlist.restaurants[index], ...item};
+  }
+  const areaOrder = ['荻窪・吉祥寺', '中野', '新宿', '涩谷・惠比寿', '下北泽', '岩本町・秋叶原・神田', '浅草', '押上・晴空塔', '银座', '人形町・日本桥'];
+  T.wishlist.restaurants.sort((a, b) => {
+    const rank = area => areaOrder.includes(area) ? areaOrder.indexOf(area) : areaOrder.length;
+    return rank(a.area) - rank(b.area);
+  });
+  const junie = T.wishlist.shops.find(item => item.name === 'Junie Moon 新宿店');
+  if (junie) Object.assign(junie, {name: 'Junie Moon Harajuku（原宿）', area: '原宿・表参道', hours: '原宿店营业时间待核实', closed: '原宿店休息日待核实', query: 'Junie Moon Harajuku'});
+  T.wishlist.restaurantPlanVersion = '2026-10-20';
+}
+
+if (T.wishlist.sasamotoPlanVersion !== '2026-10-20') {
+  const sasamoto = {name: 'ささもと 新宿店 / Sasamoto', area: '新宿', kind: '内脏串烧／煮込み', address: '東京都新宿区西新宿1-2-7 思い出横丁', note: '11/7 新宿购物后顺路的晚餐候选，与牛たんの檸檬二选一。主打猪牛内脏串烧，并非以鸡肉烧鸟为主；不可预约，排队过长就改选其他店。店方资料标为现金支付。', hours: '周一至周六 15:30–23:00（L.O. 22:30）；节假日 15:00–23:00（L.O. 22:30）', closed: '周日；年末年始、黄金周、盂兰盆节另休，以店方公告为准', status: '11/7 新宿晚餐顺路候选', query: 'ささもと 新宿店 西新宿1-2-7', source: 'https://tabelog.com/tokyo/A1304/A130401/13000779/'};
+  const sasamotoIndex = T.wishlist.restaurants.findIndex(item => item.name === sasamoto.name);
+  if (sasamotoIndex >= 0) T.wishlist.restaurants[sasamotoIndex] = {...T.wishlist.restaurants[sasamotoIndex], ...sasamoto};
+  else {
+    const shinjukuIndex = T.wishlist.restaurants.findIndex(item => item.area === '新宿');
+    T.wishlist.restaurants.splice(shinjukuIndex < 0 ? T.wishlist.restaurants.length : shinjukuIndex + 1, 0, sasamoto);
+  }
+  T.wishlist.sasamotoPlanVersion = '2026-10-20';
+}
+
 if (!document.getElementById('wishlist-style')) {
   const style = document.createElement('style');
   style.id = 'wishlist-style';
@@ -93,7 +133,7 @@ let wishTab = 'restaurants';
 function wishlist() {
   const items = T.wishlist[wishTab];
   const areas = [...new Set(items.map(x => x.area))];
-  wishView.innerHTML = `${head('WISHLIST', '想去', '按片区排列；每个地点均可直接导航。')}<div class="wish-switch"><button class="${wishTab === 'restaurants' ? 'active' : ''}" data-wish-tab="restaurants">餐厅</button><button class="${wishTab === 'shops' ? 'active' : ''}" data-wish-tab="shops">店铺</button></div>${areas.map(area => `<section><h2 class="wish-area">${area}</h2>${items.filter(x => x.area === area).map(x => `<article class="card wish-card"><h3>${escape(x.name)}</h3><div class="wish-kind">${escape(x.kind)} · ${escape(x.area)}</div><p>${escape(x.note)}</p><p class="wish-hours">营业：${escape(x.hours)}<br>休息：${escape(x.closed)}</p><span class="wish-status">${escape(x.status)}</span><a class="wish-map" target="_blank" href="${search(x.query)}"><i data-lucide="map-pinned"></i>Google 地图导航</a></article>`).join('')}</section>`).join('')}`;
+  wishView.innerHTML = `${head('WISHLIST', '想去', '按片区排列；日期为候选安排，未代表预约成功。')}<div class="wish-switch"><button class="${wishTab === 'restaurants' ? 'active' : ''}" data-wish-tab="restaurants">餐厅</button><button class="${wishTab === 'shops' ? 'active' : ''}" data-wish-tab="shops">店铺</button></div>${areas.map(area => `<section><h2 class="wish-area">${area}</h2>${items.filter(x => x.area === area).map(x => `<article class="card wish-card"><h3>${escape(x.name)}</h3><div class="wish-kind">${escape(x.kind)} · ${escape(x.area)}</div>${x.address ? `<p>地址：${escape(x.address)}</p>` : ''}<p>${escape(x.note)}</p><p class="wish-hours">营业：${escape(x.hours)}<br>休息：${escape(x.closed)}</p><span class="wish-status">${escape(x.status)}</span><a class="wish-map" target="_blank" rel="noopener" href="${search(x.query)}"><i data-lucide="map-pinned"></i>Google 地图导航</a>${x.source ? `<p><a target="_blank" rel="noopener" href="${escape(x.source)}">查看店铺信息／营业公告</a></p>` : ''}</article>`).join('')}</section>`).join('')}`;
   icons();
 }
 document.addEventListener('click', e => {
