@@ -10,10 +10,10 @@ if (!document.getElementById('jpy-first-switch')) {
   document.head.append(style);
 }
 T.days[0].theme = '抵达 · 荻窪 · 吉祥寺';
-T.days[0].reminder = '13:45 抵达成田 T2。先入住；若抵达荻窪后仍有体力，再去吉祥寺，不把第一天排满。';
-T.days[0].points = ['Narita International Airport Terminal 2', '安心お宿 Woman Tokyo Ogikubo', 'Kichijoji Station'];
+T.days[0].reminder = '13:35 同乘 CZ385 抵达羽田 T3。先入住；若抵达荻窪后仍有体力，再去吉祥寺，不把第一天排满。';
+T.days[0].points = ['Haneda Airport Terminal 3', '安心お宿 Woman Tokyo Ogikubo', 'Kichijoji Station'];
 T.days[0].acts = [
-  ['抵达后', '交通', '成田机场 T2 → 荻窪青旅', '13:45 落地；先完成入境、取行李与入住，不为了逛街赶路。'],
+  ['抵达后', '交通', '羽田机场 T3 → 荻窪青旅', '13:35 落地；先完成入境、取行李与入住，不为了逛街赶路。'],
   ['晚上（弹性）', '咖啡', '但馬屋珈琲店 · 吉祥寺', 'Coppice 吉祥寺 B1F。平日最晚 19:00；若抵达荻窪后仍有体力再去，不作为必须完成的任务。']
 ];
 
@@ -155,6 +155,26 @@ document.addEventListener('click', e => { if (e.target.closest('[data-a="close-d
 
 const refreshWithWishlist = all;
 all = () => { refreshWithWishlist(); wishlist(); };
+
+// Flight schedule supplied by the travelers; times are local to each airport.
+if (T.flightPlanVersion !== '2026-10-20') {
+  T.flights = window.ITINERARY.flights.map(flight => ({...flight}));
+  for (const flight of T.flights) {
+    const update = {flightId: flight.id, kind: '机票', name: flight.code + ' · ' + flight.travelers + ' · ' + flight.fc + ' → ' + flight.tc, date: flight.date, time: flight.time, place: flight.from + ' → ' + flight.to, note: flight.detail};
+    const existing = T.tickets.find(ticket => ticket.flightId === flight.id || (ticket.kind === '机票' && ticket.date === flight.date && ticket.name.includes(flight.code)));
+    if (existing) Object.assign(existing, update);
+    else T.tickets.push({order: '', file: '', fileType: '', ...update});
+  }
+  const returnDay = T.days.find(item => item.date === '11.11');
+  returnDay.reminder = '两人同乘厦门航空 MF816：成田 T1 14:55 起飞，18:25 抵达厦门 T3（当地时间）。目标 11:55 前抵达成田 T1；前一晚完成行李整理。机场交通优先电车，具体班次另行核对。';
+  returnDay.points = ['Hotel Nihonbashi Saibo', 'Narita International Airport Terminal 1'];
+  returnDay.acts = returnDay.acts.map(activity => {
+    if (activity[2] === '退房、前往成田机场') return ['上午', '交通', '退房、前往成田机场 T1', '两人一起出发，目标 11:55 前抵达成田 T1。优先电车；具体路线、班次和出门时间待核对。'];
+    if (activity[1] === '门票' && activity[2].includes('成田')) return ['14:55', '门票', 'MF816 · 成田 T1 → 厦门 T3（两人）', '当地时间：14:55 起飞，18:25 抵达厦门。行李额度以各自订单为准。'];
+    return activity;
+  });
+  T.flightPlanVersion = '2026-10-20';
+}
 
 save();
 all();
